@@ -31,13 +31,15 @@ class HelloWorldTest {
 	    System.setIn(originalIn);
 	}
 
+	
 	@Test
-	void test() throws IOException {
-		byte[] initialArray = "Prakash\n".getBytes();
-	    InputStream targetStream = new ByteArrayInputStream(initialArray);
+	void testBrendan() throws IOException{
+		byte[] initialArray = "Brendan".getBytes();
+		InputStream targetStream = new ByteArrayInputStream(initialArray);
 		System.setIn(targetStream);
 	    HelloWorld.main(null);
-		assertEquals("Please input your name: \nHello, Prakash", out.toString().strip());
+	    String outputString = out.toString().strip();
+	    outputString = outputString.replace( '\r',' ');
+	    assertEquals("Please input your name: \r\nHello, Brendan", out.toString().strip());
 	}
-
 }

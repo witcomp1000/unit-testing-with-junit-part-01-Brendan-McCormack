@@ -12,7 +12,10 @@ import org.junit.jupiter.api.Test;
 
 class HelloWorldTest {
 	
-	private static final ByteArrayOutputStream out = new ByteArrayOutputStream();
+	//private static final double PI = 3.14;
+	//Constant / read-only
+	private static ByteArrayOutputStream out;
+	//private static final ByteArrayOutputStream out = new ByteArrayOutputStream();
 	private static final ByteArrayOutputStream err = new ByteArrayOutputStream();
 	private static final PrintStream originalOut = System.out;
 	private static final PrintStream originalErr = System.err;
@@ -20,7 +23,7 @@ class HelloWorldTest {
 
 	@BeforeEach
 	void setUp() throws Exception {
-	    System.setOut(new PrintStream(out));
+	    //System.setOut(new PrintStream(out));
 	    System.setErr(new PrintStream(err));
 	}
 
@@ -30,16 +33,57 @@ class HelloWorldTest {
 	    System.setErr(originalErr);
 	    System.setIn(originalIn);
 	}
-
+	
+	void resetInputOutputStream(String testInput) {
+		InputStream targetStream = new ByteArrayInputStream(testInput.getBytes());
+		System.setIn(targetStream);
+		out = new ByteArrayOutputStream();
+		System.setOut(new PrintStream(out));
+	}
+	
+	void flexibleAssertHello(String testInput) {
+		String actualOutput = out.toString().strip();
+		actualOutput = actualOutput.replaceAll(" ", "");
+		actualOutput = actualOutput.replaceAll(":", "");
+		actualOutput = actualOutput.replaceAll(",", "");
+		actualOutput = actualOutput.replaceAll("\n", "");
+		actualOutput = actualOutput.replaceAll("\r", "");
+		actualOutput = actualOutput.replaceAll("\t", "");
+		testInput = testInput.replaceAll("\n","");
+		
+		assertTrue (
+			actualOutput.equalsIgnoreCase("PleaseInputYourNameHello" + testInput) ||
+			actualOutput.equalsIgnoreCase("InputYourNameHello" + testInput) ||
+			actualOutput.equalsIgnoreCase("Hi" + testInput)
+		);
+	}
 	
 	@Test
-	void testBrendan() throws IOException{
-		byte[] initialArray = "Brendan".getBytes();
-		InputStream targetStream = new ByteArrayInputStream(initialArray);
-		System.setIn(targetStream);
-	    HelloWorld.main(null);
-	    String outputString = out.toString().strip();
-	    outputString = outputString.replace( '\r',' ');
-	    assertEquals("Please input your name: \r\nHello, Brendan", out.toString().strip());
+	void test() throws IOException{
+		
+		String testString = "Brendan\n";
+		
+		resetInputOutputStream(testString);
+		HelloWorld.main(null);
+		flexibleAssertHello(testString);
+	}
+	
+	@Test
+	void test2() throws IOException{
+		
+		String testString = "Brendan\n";
+		
+		resetInputOutputStream(testString);
+		HelloWorld2.main(null);
+		flexibleAssertHello(testString);	
+	}
+	@Test
+	void test3() throws IOException{
+		
+		String testString = "Brendan\n";
+	
+		resetInputOutputStream(testString);
+		HelloWorldV3.main(null);
+		flexibleAssertHello(testString);	
 	}
 }

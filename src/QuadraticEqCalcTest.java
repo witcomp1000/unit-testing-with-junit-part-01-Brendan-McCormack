@@ -16,7 +16,6 @@ class QuadraticEqCalcTest {
 		assertEquals(expRoot1, calcRoot1, TOLERANCE);
 		assertEquals(expRoot2, calcRoot2, TOLERANCE);
 	}
-	
 	@Test
 	void testImaginaryRoots01() {
 		double a = 54.5, b = -11.0, c = 566.0;
@@ -41,7 +40,6 @@ class QuadraticEqCalcTest {
 		assertEquals(expRoot1, calcRoot1, TOLERANCE);
 		assertEquals(expRoot2, calcRoot2, TOLERANCE);
 	}
-	
 	@Test
 	void testTwoNonUniqueRoots01() {
 		double a = 2.0, b = 4.0, c = 2.0;
